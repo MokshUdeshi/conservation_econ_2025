@@ -14,6 +14,7 @@ const App = () => {
           <Route path="/quiz/:week" element={<Quiz />} />
         </Routes>
       </Router>
+      <SpeedInsights/>
     </div>
   );
 };
