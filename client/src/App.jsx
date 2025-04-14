@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./components/Landing";
 import Quiz from "./components/Quiz";
 import DarkModeToggle from "./components/DarkModeToggle";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const App = () => {
   return (
@@ -14,7 +13,6 @@ const App = () => {
           <Route path="/quiz/:week" element={<Quiz />} />
         </Routes>
       </Router>
-      <SpeedInsights/>
     </div>
   );
 };
