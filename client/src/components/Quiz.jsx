@@ -38,11 +38,8 @@ const Quiz = () => {
   }, [week]);
 
   const handleAnswer = (qIndex, selectedOption) => {
-    if (answers[qIndex]) return; // prevent changing answer
-    setAnswers({
-      ...answers,
-      [qIndex]: selectedOption,
-    });
+    if (answers[qIndex]) return;
+    setAnswers({ ...answers, [qIndex]: selectedOption });
   };
 
   const score = Object.entries(answers).filter(
@@ -52,99 +49,55 @@ const Quiz = () => {
   const allAnswered = Object.keys(answers).length === questions.length;
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Quiz: {week.replace(/-/g, " ").toUpperCase()}</h2>
+    <div className="min-h-screen px-4 py-6 bg-blue-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+      <div className="max-w-2xl mx-auto space-y-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-center">
+          Quiz: {week.replace(/-/g, " ").toUpperCase()}
+        </h2>
 
-      {questions.map((q, index) => (
-        <div key={index} style={styles.questionCard}>
-          <p style={styles.question}>{index + 1}. {q.question}</p>
-          {q.options.map((opt, i) => {
-            const selected = answers[index];
-            let style = styles.option;
-            if (selected) {
-              if (opt === q.answer) style = { ...style, ...styles.correct };
-              else if (opt === selected) style = { ...style, ...styles.incorrect };
-            }
-            return (
-              <button
-                key={i}
-                onClick={() => handleAnswer(index, opt)}
-                style={style}
-              >
-                {opt}
-              </button>
-            );
-          })}
-        </div>
-      ))}
+        {questions.map((q, index) => (
+          <div key={index} className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md space-y-3">
+            <p className="font-semibold">{index + 1}. {q.question}</p>
+            {q.options.map((opt, i) => {
+              const selected = answers[index];
+              const isCorrect = opt === q.answer;
+              const isSelected = selected === opt;
 
-      {allAnswered && (
-        <div style={styles.resultBox}>
-          <h3>Your Score: {score} / {questions.length}</h3>
-          <button onClick={() => navigate("/")} style={styles.backButton}>Go to Landing Page</button>
-        </div>
-      )}
+              let optionStyle = "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600";
+              if (selected) {
+                if (isCorrect) optionStyle = "bg-green-200 text-green-900 dark:bg-green-700 dark:text-green-100";
+                else if (isSelected) optionStyle = "bg-red-200 text-red-900 dark:bg-red-700 dark:text-red-100";
+              }
+
+              return (
+                <button
+                  key={i}
+                  onClick={() => handleAnswer(index, opt)}
+                  className={`block w-full text-left px-4 py-2 rounded-md font-medium ${optionStyle} transition`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+
+        {allAnswered && (
+          <div className="text-center mt-6">
+            <h3 className="text-lg font-bold mb-4">
+              Your Score: {score} / {questions.length}
+            </h3>
+            <button
+              onClick={() => navigate("/")}
+              className="px-5 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition"
+            >
+              Go to Landing Page
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: "1rem",
-    maxWidth: "600px",
-    margin: "auto",
-    fontFamily: "Arial, sans-serif"
-  },
-  title: {
-    textAlign: "center",
-    fontSize: "1.5rem",
-    marginBottom: "1.5rem"
-  },
-  questionCard: {
-    marginBottom: "1.5rem",
-    backgroundColor: "#f9f9f9",
-    padding: "1rem",
-    borderRadius: "12px",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
-  },
-  question: {
-    fontWeight: "bold",
-    marginBottom: "0.5rem"
-  },
-  option: {
-    display: "block",
-    width: "100%",
-    padding: "0.75rem",
-    margin: "0.25rem 0",
-    border: "none",
-    borderRadius: "8px",
-    backgroundColor: "#e0e0e0",
-    cursor: "pointer",
-    fontSize: "1rem",
-    textAlign: "left"
-  },
-  correct: {
-    backgroundColor: "#c8e6c9",
-    color: "#2e7d32"
-  },
-  incorrect: {
-    backgroundColor: "#ffcdd2",
-    color: "#c62828"
-  },
-  resultBox: {
-    textAlign: "center",
-    marginTop: "2rem"
-  },
-  backButton: {
-    marginTop: "1rem",
-    padding: "0.75rem 1.5rem",
-    fontSize: "1rem",
-    border: "none",
-    borderRadius: "8px",
-    backgroundColor: "#1976d2",
-    color: "white",
-    cursor: "pointer"
-  }
 };
 
 export default Quiz;
