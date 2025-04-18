@@ -24,6 +24,7 @@ const Landing = () => {
             className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select Week</option>
+            <option value="week-0">Week 0</option>
             {[...Array(12).keys()].map((i) => (
               <option key={i} value={`week-${i + 1}`}>
                 Week {i + 1}
